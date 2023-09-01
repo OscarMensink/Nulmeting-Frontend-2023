@@ -69,7 +69,7 @@ export const useTodos = defineStore<
 			const newTodo = await $fetch<Todo>(
 				"https://86a4h9y007.execute-api.eu-west-1.amazonaws.com/development/nulmeting/todo",
 				{
-					headers: [["x-api-key", "6AgP2Gr7j3QvJHIr7xOq4OlY5McyScy3kqQL5Mr7"]],
+					headers: [["x-api-key", ""]],
 				}
 			).catch((error) => error.value);
 			const inList = this.todo.filter(
