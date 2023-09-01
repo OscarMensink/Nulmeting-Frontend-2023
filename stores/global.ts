@@ -1,6 +1,5 @@
 export const useGlobalStore = defineStore("globalStore", () => {
 	const loading = ref(false);
-
 	const startLoader = (): void => {
 		loading.value = true;
 	};
@@ -23,16 +22,34 @@ export const useCounterStore = defineStore("counter", {
 	},
 });
 
-export const useTodos = defineStore("todo", {
+type Todo = {
+	todo: {
+		id: string;
+		assignee: string;
+		dueDateTime: string;
+		description: string;
+	};
+};
+
+export const useTodos = defineStore<
+	"todo",
+	{
+		todo: {
+			id: string;
+			assignee: string;
+			dueDateTime: string;
+			description: string;
+		}[];
+	},
+	{},
+	{
+		addtodo(): void;
+		fetchtodo(): Promise<void>;
+		removeTodo(id: string): void;
+	}
+>("todo", {
 	state: () => ({
-		todo: [
-			{
-				id: "5590fa55-1266-45af-8c86-d5a9dd03f955",
-				assignee: "Oscar",
-				dueDateTime: "2022-05-01T12:30:00.000Z",
-				description: "starting task",
-			},
-		],
+		todo: [],
 	}),
 
 	actions: {
@@ -44,9 +61,22 @@ export const useTodos = defineStore("todo", {
 				description: "Tropisch fruit plukken",
 			};
 			const inList = this.todo.filter((todoItem) => todoItem.id == newTodo.id);
-
 			if (inList.length == 0) {
 				this.todo.push(newTodo);
+			}
+		},
+		async fetchtodo() {
+			const newTodo = await $fetch<Todo>(
+				"https://86a4h9y007.execute-api.eu-west-1.amazonaws.com/development/nulmeting/todo",
+				{
+					headers: [["x-api-key", "6AgP2Gr7j3QvJHIr7xOq4OlY5McyScy3kqQL5Mr7"]],
+				}
+			).catch((error) => error.value);
+			const inList = this.todo.filter(
+				(todoItem) => todoItem.id == newTodo.todo.id
+			);
+			if (inList.length == 0) {
+				this.todo.push(newTodo.todo);
 			}
 		},
 		removeTodo(id: string) {

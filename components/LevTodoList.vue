@@ -1,7 +1,7 @@
 <template>
 	<div class="list-wrapper">
 		<div class="todo-wrapper">
-			<LevButton @clicked="todoList.addtodo">Add Todo</LevButton>
+			<LevButton @clicked="todoList.fetchtodo">Add Todo</LevButton>
 			<ul>
 				<li v-for="(item, index) in todoList.todo">
 					<div>{{ item.assignee }}</div>
@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { isTemplateExpression } from "typescript";
 import { useTodos } from "../stores/global";
 
 const todoList = useTodos();
