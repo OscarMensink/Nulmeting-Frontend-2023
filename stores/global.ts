@@ -66,10 +66,13 @@ export const useTodos = defineStore<
 			}
 		},
 		async fetchtodo() {
+			const apiString = process.env.API_KEY
+				? process.env.API_KEY
+				: "APIKeyNotWorking";
 			const newTodo = await $fetch<Todo>(
 				"https://86a4h9y007.execute-api.eu-west-1.amazonaws.com/development/nulmeting/todo",
 				{
-					headers: [["x-api-key", ""]],
+					headers: [["x-api-key", apiString]],
 				}
 			).catch((error) => error.value);
 			const inList = this.todo.filter(
